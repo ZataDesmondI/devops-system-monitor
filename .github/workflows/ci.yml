@@ -1,0 +1,33 @@
+name: DevOps System Monitor CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flask psutil
+
+    - name: Run basic test
+      run: |
+        python -c "import flask, psutil; print('Dependencies OK')"
+
+    - name: Test Flask app starts
+      run: |
+        python -c "from app import app; print('Flask app OK')"
